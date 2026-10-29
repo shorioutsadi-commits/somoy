@@ -1,0 +1,7 @@
+{
+  "name": "Somoy - সময় মেসেজিং রিমাইন্ডার",
+  "description": "যা মনে রাখা দরকার, সময়কে বলুন। বাংলা, বাংলিশ বা ইংরেজিতে কাজ আর সময় লিখে মেসেজ পাঠালে সময়মতো মনে করিয়ে দেওয়ার আধুনিক মেসেজিং রিমাইন্ডার সহকারী।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

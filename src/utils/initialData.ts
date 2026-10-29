@@ -1,0 +1,107 @@
+import { ChatMessage, Reminder, AppSettings } from '../types';
+
+export const INITIAL_REMINDERS: Reminder[] = [
+  {
+    id: 'rem-1',
+    title: 'মাকে ফোন',
+    originalText: 'কাল সকাল ১০টায় মাকে ফোন দিতে মনে করিও',
+    targetTimestamp: Date.now() + 1000 * 60 * 60 * 14,
+    displayDateText: 'কাল সকাল ১০:০০',
+    recurrence: 'none',
+    status: 'active',
+    createdAt: Date.now() - 1000 * 60 * 60 * 2,
+    snoozeCount: 0,
+    tags: ['ব্যক্তিগত', 'পরিবার'],
+  },
+  {
+    id: 'rem-2',
+    title: 'বাবার ওষুধ',
+    originalText: 'রাত ৮টায় বাবার ওষুধের কথা মনে করিও',
+    targetTimestamp: Date.now() + 1000 * 60 * 60 * 7,
+    displayDateText: 'আজ রাত ৮:০০',
+    recurrence: 'daily',
+    status: 'active',
+    createdAt: Date.now() - 1000 * 60 * 60 * 4,
+    snoozeCount: 0,
+    tags: ['পরিবার', 'স্বাস্থ্য'],
+  },
+  {
+    id: 'rem-3',
+    title: 'গ্যাস বিল পরিশোধ',
+    originalText: 'robibar shokal 10tay gas bill',
+    targetTimestamp: Date.now() + 1000 * 60 * 60 * 72,
+    displayDateText: 'রবিবার সকাল ১০:০০',
+    recurrence: 'monthly',
+    status: 'active',
+    createdAt: Date.now() - 1000 * 60 * 60 * 10,
+    snoozeCount: 0,
+    tags: ['বিল ও খরচ'],
+  },
+  {
+    id: 'rem-4',
+    title: 'Check supplier payment',
+    originalText: 'Tomorrow at 2pm check supplier payment',
+    targetTimestamp: Date.now() + 1000 * 60 * 60 * 18,
+    displayDateText: 'কাল দুপুর ২:০০',
+    recurrence: 'none',
+    status: 'active',
+    createdAt: Date.now() - 1000 * 60 * 60 * 12,
+    snoozeCount: 0,
+    tags: ['কাজ'],
+  },
+  {
+    id: 'rem-5',
+    title: 'সকাল ৮টার ক্লাস',
+    originalText: 'kal shokal 8tay class',
+    targetTimestamp: Date.now() - 1000 * 60 * 60 * 24,
+    displayDateText: 'গতকাল সকাল ৮:০০',
+    recurrence: 'none',
+    status: 'completed',
+    createdAt: Date.now() - 1000 * 60 * 60 * 36,
+    snoozeCount: 1,
+    tags: ['শিক্ষা'],
+  },
+];
+
+export const INITIAL_MESSAGES: ChatMessage[] = [
+  {
+    id: 'msg-1',
+    sender: 'user',
+    text: 'কাল সকাল ১০টায় মাকে ফোন দিতে মনে করিও',
+    timestamp: '১১:৪১',
+    isoTimestamp: Date.now() - 1000 * 60 * 30,
+    type: 'text',
+  },
+  {
+    id: 'msg-2',
+    sender: 'somoy',
+    text: 'ঠিক আছে। কাল সকাল ১০:০০ টায় মাকে ফোন দেওয়ার কথা মনে করিয়ে দেব।',
+    timestamp: '১১:৪২',
+    isoTimestamp: Date.now() - 1000 * 60 * 29,
+    type: 'confirmation',
+    metadata: {
+      reminderId: 'rem-1',
+      reminder: INITIAL_REMINDERS[0],
+    },
+  },
+  {
+    id: 'msg-3',
+    sender: 'somoy',
+    text: '⏰ রিমাইন্ডার: মাকে ফোন',
+    timestamp: '১০:০০',
+    isoTimestamp: Date.now() - 1000 * 60 * 15,
+    type: 'reminder_trigger',
+    metadata: {
+      reminderId: 'rem-1',
+      reminder: INITIAL_REMINDERS[0],
+      actionHandled: false,
+    },
+  },
+];
+
+export const INITIAL_SETTINGS: AppSettings = {
+  soundEnabled: true,
+  vibrationEnabled: true,
+  followUpEnabled: true,
+  mobileFrameMode: true,
+};
