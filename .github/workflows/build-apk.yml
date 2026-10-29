@@ -10,6 +10,10 @@ jobs:
     name: Build Android APK (Somoy)
     runs-on: ubuntu-latest
 
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -24,9 +28,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+          cache: 'gradle'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK Licenses
+        run: |
+          mkdir -p "$ANDROID_HOME/licenses" || true
+          echo "24333f8a6383dddbaa6a4058e134449d8ac8dd85" > "$ANDROID_HOME/licenses/android-sdk-license" || true
+          echo "84831b9409646a2a07c0b898194411135ee7b409" >> "$ANDROID_HOME/licenses/android-sdk-license" || true
+          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license" || true
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
 
       - name: Install NPM Dependencies
         run: npm install --legacy-peer-deps --no-audit
@@ -34,7 +44,7 @@ jobs:
       - name: Build Web Assets (Vite)
         run: npm run build
 
-      - name: Initialize Android Project
+      - name: Initialize Android Platform
         run: |
           if [ ! -d "android" ]; then
             npx cap add android
@@ -47,12 +57,16 @@ jobs:
       - name: Build Debug APK with Gradle
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Locate Generated APK
         id: find_apk
         run: |
           APK_PATH=$(find android/app/build/outputs/apk/debug -name "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            echo "Searching all outputs for apk..."
+            APK_PATH=$(find android -name "*.apk" | head -n 1)
+          fi
           echo "Found APK at: $APK_PATH"
           echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
 
